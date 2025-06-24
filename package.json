@@ -1,0 +1,28 @@
+{
+  "name": "menu-maker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint . --ext .ts,.js",
+    "lint:fix": "eslint . --ext .ts,.js --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gastoncarriquiry/menu-maker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gastoncarriquiry/menu-maker/issues"
+  },
+  "homepage": "https://github.com/gastoncarriquiry/menu-maker#readme",
+  "description": "",
+  "devDependencies": {
+    "eslint": "^9.29.0",
+    "prettier": "^3.6.0"
+  }
+}
