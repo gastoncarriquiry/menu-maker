@@ -71,7 +71,7 @@ services:
   db:
     image: postgres:15
     environment:
-      POSTGRES_DB: menu-maker
+      POSTGRES_DB: menu_maker
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
@@ -184,7 +184,7 @@ export default config;
 ### Database Schema
 
 - Users table for authentication
-- Meals table for meal information
+- Menus table for meal information
 - Preferences table for user preferences
 - Menu_items table for generated menus
 

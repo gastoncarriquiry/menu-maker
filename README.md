@@ -65,7 +65,7 @@ Create a `.env` file in the root directory:
 
 ```env
 AIML_API_KEY=your_aiml_api_key_here
-POSTGRES_DB=meals
+POSTGRES_DB=menu_maker
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 ```
@@ -183,12 +183,12 @@ Services are orchestrated using Docker Compose without version specification (ve
 - `POST /api/auth/login` - User login
 - `POST /api/auth/refresh` - Refresh token
 
-### Meals
+### Menus
 
-- `GET /api/meals` - Get user meals
-- `POST /api/meals` - Create new meal
-- `PUT /api/meals/:id` - Update meal
-- `DELETE /api/meals/:id` - Delete meal
+- `GET /api/menus` - Get user menus
+- `POST /api/menus` - Create new meal
+- `PUT /api/menus/:id` - Update meal
+- `DELETE /api/menus/:id` - Delete meal
 
 ### Recommendations
 
