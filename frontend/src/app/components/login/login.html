@@ -1,0 +1,68 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title>Login to Menu Maker</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email or Username</mat-label>
+          <input
+            matInput
+            formControlName="emailOrUsername"
+            type="text"
+            autocomplete="username"
+            [class.error]="isFieldInvalid('emailOrUsername')"
+          />
+          @if (isFieldInvalid('emailOrUsername')) {
+            <mat-error>Email or username is required</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            formControlName="password"
+            type="password"
+            autocomplete="current-password"
+            [class.error]="isFieldInvalid('password')"
+          />
+          @if (isFieldInvalid('password')) {
+            <mat-error>Password is required</mat-error>
+          }
+        </mat-form-field>
+
+        @if (errorMessage()) {
+          <div class="error-message">
+            {{ errorMessage() }}
+          </div>
+        }
+
+        <div class="button-container">
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="loginForm.invalid || isLoading()"
+            class="login-button"
+          >
+            @if (isLoading()) {
+              <mat-spinner diameter="20"></mat-spinner>
+            } @else {
+              Login
+            }
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <p class="register-link">
+        Don't have an account?
+        <a (click)="goToRegister()" class="link">Register here</a>
+      </p>
+    </mat-card-actions>
+  </mat-card>
+</div>
