@@ -202,11 +202,9 @@ Thumbs.db
 
 # Angular specific
 # compiled output
-/dist
-/tmp
-/out-tsc
-# Only exists if Bazel was run
-/bazel-out
+.angular/
+tmp/
+out-tsc/
 
 # dependencies
 /node_modules
