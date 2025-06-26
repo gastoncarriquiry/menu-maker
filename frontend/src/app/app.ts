@@ -1,12 +1,18 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { OfflineIndicatorComponent } from './pwa/components/offline-indicator/offline-indicator';
+import { UpdateNotificationComponent } from './pwa/components/update-notification/update-notification';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [
+    RouterOutlet,
+    OfflineIndicatorComponent,
+    UpdateNotificationComponent,
+  ],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
 })
 export class App {
-  protected title = 'frontend';
+  protected title = 'Menu Maker';
 }
