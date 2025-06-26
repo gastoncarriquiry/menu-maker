@@ -4,7 +4,7 @@ mode: agent
 
 # Implementation Steps for Menu Maker
 
-## Step 1: Repository Initialization & Tooling
+## Step 1: Repository Initialization & Tooling **DONE**
 
 ### Package.json Setup
 
@@ -54,7 +54,7 @@ npx eslint . --ext .ts,.js
 npx prettier --check .
 ```
 
-## Step 2: Docker Compose Baseline
+## Step 2: Docker Compose Baseline **DONE**
 
 ### Create docker-compose.yml (Versionless)
 
@@ -86,7 +86,7 @@ volumes:
 docker compose up --build
 ```
 
-## Step 3: Backend Baseline with TypeScript & Jest
+## Step 3: Backend Baseline with TypeScript & Jest **DONE**
 
 ### Backend Directory Setup
 
@@ -133,7 +133,7 @@ npm run build
 npm test
 ```
 
-## Step 4: Frontend Baseline with Angular & Jest
+## Step 4: Frontend Baseline with Angular & Jest **DONE**
 
 ### Angular Application Generation
 
@@ -172,7 +172,7 @@ export default config;
 }
 ```
 
-## Step 5: Database & ORM Setup
+## Step 5: Database & ORM Setup **DONE**
 
 ### TypeORM Configuration
 
@@ -188,7 +188,7 @@ export default config;
 - Preferences table for user preferences
 - Menu_items table for generated menus
 
-## Step 6: Authentication & Users
+## Step 6: Authentication & Users **DONE**
 
 ### Backend Authentication
 
@@ -318,7 +318,7 @@ html {
 - Persist theme preference
 - Respect system preferences
 
-## Final Verification Steps
+## Step 10: Final Verifications
 
 ### Development Environment
 
