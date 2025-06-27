@@ -89,7 +89,7 @@ export class RegisterComponent {
       this.auth.register(registerData).subscribe({
         next: (response) => {
           this.isLoading.set(false);
-          this.snackBar.open('Account created successfully!', 'Close', {
+          this.snackBar.open('¡Cuenta creada exitosamente!', 'Cerrar', {
             duration: 3000,
             horizontalPosition: 'center',
             verticalPosition: 'top',
@@ -100,8 +100,8 @@ export class RegisterComponent {
         error: (error) => {
           this.isLoading.set(false);
           this.snackBar.open(
-            error.message ?? 'Registration failed. Please try again.',
-            'Close',
+            error.message ?? 'Error de registro. Por favor intenta de nuevo.',
+            'Cerrar',
             {
               duration: 5000,
               horizontalPosition: 'center',

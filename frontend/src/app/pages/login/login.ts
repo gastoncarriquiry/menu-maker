@@ -58,7 +58,7 @@ export class LoginComponent {
       this.auth.login(this.loginForm.value).subscribe({
         next: (response) => {
           this.isLoading.set(false);
-          this.snackBar.open('Login successful!', 'Close', {
+          this.snackBar.open('¡Inicio de sesión exitoso!', 'Cerrar', {
             duration: 3000,
             horizontalPosition: 'center',
             verticalPosition: 'top',
@@ -69,8 +69,8 @@ export class LoginComponent {
         error: (error) => {
           this.isLoading.set(false);
           this.snackBar.open(
-            error.message ?? 'Login failed. Please try again.',
-            'Close',
+            error.message ?? 'Error de inicio de sesión. Por favor intenta de nuevo.',
+            'Cerrar',
             {
               duration: 5000,
               horizontalPosition: 'center',

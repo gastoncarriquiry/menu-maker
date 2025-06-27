@@ -22,7 +22,7 @@ export const routes: Routes = [
     path: 'register',
     component: RegisterComponent,
     canActivate: [guestGuard],
-    title: 'Register - Menu Maker',
+    title: 'Registro - Menu Maker',
   },
 
   // Protected routes (require authentication)

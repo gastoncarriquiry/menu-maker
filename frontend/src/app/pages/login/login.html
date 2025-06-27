@@ -1,13 +1,13 @@
 <div class="login-container">
   <mat-card class="login-card">
     <mat-card-header>
-      <mat-card-title>Login to Menu Maker</mat-card-title>
+      <mat-card-title>Iniciar Sesión en Menu Maker</mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Email</mat-label>
+          <mat-label>Correo Electrónico</mat-label>
           <input
             matInput
             formControlName="email"
@@ -16,12 +16,12 @@
             [class.error]="isFieldInvalid('email')"
           />
           @if (isFieldInvalid('email')) {
-            <mat-error>Email is required</mat-error>
+            <mat-error>El correo electrónico es requerido</mat-error>
           }
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Password</mat-label>
+          <mat-label>Contraseña</mat-label>
           <input
             matInput
             formControlName="password"
@@ -30,7 +30,7 @@
             [class.error]="isFieldInvalid('password')"
           />
           @if (isFieldInvalid('password')) {
-            <mat-error>Password is required</mat-error>
+            <mat-error>La contraseña es requerida</mat-error>
           }
         </mat-form-field>
 
@@ -45,7 +45,7 @@
             @if (isLoading()) {
               <mat-spinner diameter="20"></mat-spinner>
             } @else {
-              Login
+              Iniciar Sesión
             }
           </button>
         </div>
@@ -54,8 +54,8 @@
 
     <mat-card-actions>
       <p class="register-link">
-        Don't have an account?
-        <a (click)="goToRegister()" class="link">Register here</a>
+        ¿No tienes una cuenta?
+        <a (click)="goToRegister()" class="link">Regístrate aquí</a>
       </p>
     </mat-card-actions>
   </mat-card>

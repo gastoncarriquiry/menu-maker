@@ -1,9 +1,9 @@
 <mat-toolbar color="primary">
-  <span>Menu Maker Dashboard</span>
+  <span>Panel de Control Menu Maker</span>
   <span class="spacer"></span>
   <ng-container *ngIf="currentUser$ | async as user">
-    <span class="user-info">Welcome, {{ user.firstName }}!</span>
-    <button mat-icon-button (click)="logout()" aria-label="Logout">
+    <span class="user-info">¡Bienvenido, {{ user.firstName }}!</span>
+    <button mat-icon-button (click)="logout()" aria-label="Cerrar Sesión">
       <mat-icon>logout</mat-icon>
     </button>
   </ng-container>
@@ -12,38 +12,38 @@
 <div class="dashboard-container">
   <mat-card class="welcome-card">
     <mat-card-header>
-      <mat-card-title>Welcome to Menu Maker</mat-card-title>
+      <mat-card-title>Bienvenido a Menu Maker</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <p>You have successfully logged in to Menu Maker!</p>
+      <p>¡Has iniciado sesión exitosamente en Menu Maker!</p>
       <p>
-        This is your dashboard where you can manage your menus and preferences.
+        Este es tu panel de control donde puedes gestionar tus menús y preferencias.
       </p>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button color="primary">Create New Menu</button>
-      <button mat-button>View My Menus</button>
+      <button mat-raised-button color="primary">Crear Nuevo Menú</button>
+      <button mat-button>Ver Mis Menús</button>
     </mat-card-actions>
   </mat-card>
 
   <div class="quick-actions">
     <mat-card class="action-card">
       <mat-card-header>
-        <mat-card-title>Quick Actions</mat-card-title>
+        <mat-card-title>Acciones Rápidas</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <div class="action-buttons">
           <button mat-raised-button color="accent">
             <mat-icon>restaurant_menu</mat-icon>
-            Browse Menus
+            Explorar Menús
           </button>
           <button mat-raised-button color="accent">
             <mat-icon>settings</mat-icon>
-            Preferences
+            Preferencias
           </button>
           <button mat-raised-button color="accent">
             <mat-icon>account_circle</mat-icon>
-            Profile
+            Perfil
           </button>
         </div>
       </mat-card-content>
