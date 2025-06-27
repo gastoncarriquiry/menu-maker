@@ -32,8 +32,8 @@ import { ThemeService } from '../../services/theme';
         background-color: var(--mat-sys-surface-variant);
         transition: all 0.2s ease;
         position: fixed;
-        top: 16px;
-        right: 16px;
+        bottom: 16px;
+        left: 16px;
         z-index: 1000;
       }
 
