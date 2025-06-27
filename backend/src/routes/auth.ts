@@ -8,13 +8,13 @@ const authService = new AuthService();
 // Registration endpoint
 router.post('/register', async (req: Request, res: Response): Promise<void> => {
   try {
-    const { email, username, password } = req.body;
+    const { email, firstName, password } = req.body;
 
     // Basic validation
-    if (!email || !username || !password) {
+    if (!email || !firstName || !password) {
       res
         .status(400)
-        .json({ error: 'Email, username, and password are required' });
+        .json({ error: 'Email, first name, and password are required' });
       return;
     }
 
@@ -25,7 +25,7 @@ router.post('/register', async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const result = await authService.register(email, username, password);
+    const result = await authService.register(email, firstName, password);
 
     res.status(201).json({
       message: 'User registered successfully',
@@ -43,16 +43,16 @@ router.post('/register', async (req: Request, res: Response): Promise<void> => {
 // Login endpoint
 router.post('/login', async (req: Request, res: Response): Promise<void> => {
   try {
-    const { emailOrUsername, password } = req.body;
+    const { email, password } = req.body;
 
-    if (!emailOrUsername || !password) {
+    if (!email || !password) {
       res
         .status(400)
         .json({ error: 'Email/username and password are required' });
       return;
     }
 
-    const result = await authService.login(emailOrUsername, password);
+    const result = await authService.login(email, password);
 
     res.json({
       message: 'Login successful',
