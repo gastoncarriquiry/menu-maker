@@ -11,6 +11,7 @@ export interface AuthTokens {
 export interface AuthUser {
   id: string;
   email: string;
+  name?: string;
 }
 
 export class AuthService {
@@ -143,6 +144,7 @@ export class AuthService {
     const authUser: AuthUser = {
       id: user.id,
       email: user.email,
+      name: user.firstName,
     };
 
     const tokens = this.generateTokens(authUser);

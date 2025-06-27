@@ -7,10 +7,7 @@ import { environment } from '../../environments/environment';
 export interface User {
   id: string;
   email: string;
-  firstName: string;
-  isActive: boolean;
-  createdAt: string;
-  updatedAt: string;
+  name: string;
 }
 
 export interface AuthTokens {
