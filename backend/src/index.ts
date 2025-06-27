@@ -1,12 +1,13 @@
-import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import express from 'express';
+import path from 'path';
 import 'reflect-metadata';
 import { AppDataSource } from './data-source';
 import authRoutes from './routes/auth';
 
 // Load environment variables
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
