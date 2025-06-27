@@ -2,79 +2,106 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  padding: 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
+  min-height: 100dvh;
+  padding: 1.5em;
+  background-color: var(--mat-sys-background);
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgba(0, 0, 0, 0.03) 1px,
+    transparent 0
+  );
+  background-size: 1.5em 1.5em;
 
-.register-card {
-  width: 100%;
-  max-width: 500px;
-  padding: 20px;
-}
+  .register-card {
+    width: 100%;
+    max-width: 31.25em; // 500px converted to em
+    padding: 1.5em;
+    border: 1px solid var(--mat-sys-outline-variant);
 
-.name-row {
-  display: flex;
-  gap: 16px;
-}
+    mat-card-title {
+      margin-bottom: 2em;
+      color: var(--mat-sys-on-surface);
+    }
 
-.half-width {
-  flex: 1;
-  margin-bottom: 16px;
-}
+    mat-card-content {
+      form {
+        .name-row {
+          display: flex;
+          gap: 1em;
 
-.full-width {
-  width: 100%;
-  margin-bottom: 16px;
-}
+          .half-width {
+            flex: 1;
+            margin-bottom: 1em;
 
-.error-message {
-  color: #f44336;
-  margin-bottom: 16px;
-  padding: 8px;
-  background-color: #ffebee;
-  border-radius: 4px;
-  font-size: 14px;
-}
+            &.error input {
+              border-color: var(--mat-sys-error) !important;
+            }
+          }
+        }
 
-.button-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
+        .full-width {
+          width: 100%;
+          margin-bottom: 1em;
 
-.register-button {
-  min-width: 140px;
-  height: 44px;
-}
+          &.error input {
+            border-color: var(--mat-sys-error) !important;
+          }
+        }
 
-.login-link {
-  text-align: center;
-  margin: 16px 0 0 0;
-  color: #666;
-}
+        .button-container {
+          display: flex;
+          justify-content: center;
+          margin-top: 1.5em;
 
-.link {
-  color: #3f51b5;
-  cursor: pointer;
-  text-decoration: underline;
-}
+          .register-button {
+            width: 100%;
 
-.link:hover {
-  color: #303f9f;
-}
+            mat-spinner {
+              margin: 0 auto;
+            }
+          }
+        }
+      }
+    }
 
-.error input {
-  border-color: #f44336;
-}
+    mat-card-actions {
+      .login-link {
+        text-align: center;
+        margin: 1.5em 0 0 0;
+        color: var(--mat-sys-on-surface-variant);
+        font-size: 0.875em;
 
-mat-spinner {
-  margin: 0 auto;
-}
+        .link {
+          color: var(--mat-sys-primary);
+          cursor: pointer;
+          text-decoration: none;
+          font-weight: 500;
+          transition: color 0.15s ease;
 
-@media (max-width: 600px) {
-  .name-row {
-    flex-direction: column;
-    gap: 0;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+
+  // Responsive design
+  @media (max-width: 37.5em) {
+    // 600px converted to em
+    padding: 1em;
+
+    .register-card {
+      padding: 1.5em;
+
+      mat-card-content {
+        form {
+          .name-row {
+            flex-direction: column;
+            gap: 0;
+          }
+        }
+      }
+    }
   }
 }

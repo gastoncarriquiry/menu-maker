@@ -33,7 +33,6 @@ import { AuthService } from '../../services/auth';
 export class RegisterComponent {
   registerForm: FormGroup;
   isLoading = signal(false);
-  errorMessage = signal('');
 
   constructor(
     private readonly fb: FormBuilder,
@@ -81,7 +80,6 @@ export class RegisterComponent {
   onSubmit(): void {
     if (this.registerForm.valid && !this.hasPasswordMismatch()) {
       this.isLoading.set(true);
-      this.errorMessage.set('');
 
       const formValue = this.registerForm.value;
       const registerData = {
@@ -99,13 +97,21 @@ export class RegisterComponent {
             duration: 3000,
             horizontalPosition: 'center',
             verticalPosition: 'top',
+            panelClass: ['success-snackbar'],
           });
           this.router.navigate(['/dashboard']);
         },
         error: (error) => {
           this.isLoading.set(false);
-          this.errorMessage.set(
-            error.message || 'Registration failed. Please try again.',
+          this.snackBar.open(
+            error.message ?? 'Registration failed. Please try again.',
+            'Close',
+            {
+              duration: 5000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              panelClass: ['error-snackbar'],
+            },
           );
         },
       });
