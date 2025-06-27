@@ -2,10 +2,11 @@ import request from 'supertest';
 import app from '../index';
 import { AppDataSource } from '../data-source';
 import { User } from '../entities/User';
+import { AuthTokens } from '../services/AuthService';
 
 describe('Authentication Routes', () => {
-  let testUser: any;
-  let authTokens: any;
+  let testUser: User;
+  let authTokens: AuthTokens;
 
   beforeAll(async () => {
     // Initialize database connection if not already initialized

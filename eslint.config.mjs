@@ -4,6 +4,16 @@ import parser from '@typescript-eslint/parser';
 export default [
   {
     files: ['**/*.ts', '**/*.js', '**/*.mjs'],
+    ignores: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/build/**',
+      '**/.angular/**',
+      '**/coverage/**',
+      '**/*.min.js',
+      '**/docker-compose.yml',
+      '**/Dockerfile',
+    ],
     languageOptions: {
       parser: parser,
       parserOptions: {
