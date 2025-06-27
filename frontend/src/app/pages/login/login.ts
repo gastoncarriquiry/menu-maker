@@ -33,7 +33,6 @@ import { AuthService } from '../../services/auth';
 export class LoginComponent {
   loginForm: FormGroup;
   isLoading = signal(false);
-  errorMessage = signal('');
 
   constructor(
     private readonly fb: FormBuilder,
@@ -55,7 +54,6 @@ export class LoginComponent {
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.isLoading.set(true);
-      this.errorMessage.set('');
 
       this.auth.login(this.loginForm.value).subscribe({
         next: (response) => {
@@ -64,13 +62,21 @@ export class LoginComponent {
             duration: 3000,
             horizontalPosition: 'center',
             verticalPosition: 'top',
+            panelClass: ['success-snackbar'],
           });
           this.router.navigate(['/dashboard']);
         },
         error: (error) => {
           this.isLoading.set(false);
-          this.errorMessage.set(
-            error.message || 'Login failed. Please try again.',
+          this.snackBar.open(
+            error.message ?? 'Login failed. Please try again.',
+            'Close',
+            {
+              duration: 5000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              panelClass: ['error-snackbar'],
+            },
           );
         },
       });
