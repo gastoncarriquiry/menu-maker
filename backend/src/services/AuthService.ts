@@ -11,7 +11,6 @@ export interface AuthTokens {
 export interface AuthUser {
   id: string;
   email: string;
-  username: string;
 }
 
 export class AuthService {
@@ -36,7 +35,6 @@ export class AuthService {
     const payload = {
       id: user.id,
       email: user.email,
-      username: user.username,
     };
 
     const accessToken = jwt.sign(payload, this.jwtSecret, {
@@ -59,12 +57,11 @@ export class AuthService {
       const decoded = jwt.verify(token, this.jwtSecret, {
         issuer: 'menu-maker',
         audience: 'menu-maker-users',
-      }) as any;
+      }) as { id: string; email: string };
 
       return {
         id: decoded.id,
         email: decoded.email,
-        username: decoded.username,
       };
     } catch (error) {
       console.error('Error verifying access token:', error);
@@ -77,7 +74,7 @@ export class AuthService {
       const decoded = jwt.verify(token, this.jwtRefreshSecret, {
         issuer: 'menu-maker',
         audience: 'menu-maker-users',
-      }) as any;
+      }) as { id: string };
 
       return { id: decoded.id };
     } catch (error) {
@@ -88,16 +85,16 @@ export class AuthService {
 
   async register(
     email: string,
-    username: string,
+    firstName: string,
     password: string,
   ): Promise<{ user: AuthUser; tokens: AuthTokens }> {
     // Check if user already exists
     const existingUser = await this.userRepository.findOne({
-      where: [{ email }, { username }],
+      where: { email },
     });
 
     if (existingUser) {
-      throw new Error('User with this email or username already exists');
+      throw new Error('User with this email already exists');
     }
 
     // Hash password
@@ -106,7 +103,7 @@ export class AuthService {
     // Create user
     const user = this.userRepository.create({
       email,
-      username,
+      firstName,
       password: hashedPassword,
     });
 
@@ -116,7 +113,6 @@ export class AuthService {
     const authUser: AuthUser = {
       id: savedUser.id,
       email: savedUser.email,
-      username: savedUser.username,
     };
 
     const tokens = this.generateTokens(authUser);
@@ -125,12 +121,12 @@ export class AuthService {
   }
 
   async login(
-    emailOrUsername: string,
+    email: string,
     password: string,
   ): Promise<{ user: AuthUser; tokens: AuthTokens }> {
-    // Find user by email or username
+    // Find user by email
     const user = await this.userRepository.findOne({
-      where: [{ email: emailOrUsername }, { username: emailOrUsername }],
+      where: { email },
     });
 
     if (!user) {
@@ -147,7 +143,6 @@ export class AuthService {
     const authUser: AuthUser = {
       id: user.id,
       email: user.email,
-      username: user.username,
     };
 
     const tokens = this.generateTokens(authUser);
@@ -173,7 +168,6 @@ export class AuthService {
     const authUser: AuthUser = {
       id: user.id,
       email: user.email,
-      username: user.username,
     };
 
     return this.generateTokens(authUser);
@@ -191,7 +185,6 @@ export class AuthService {
     return {
       id: user.id,
       email: user.email,
-      username: user.username,
     };
   }
 }

@@ -25,20 +25,6 @@
 
     mat-card-content {
       form {
-        .name-row {
-          display: flex;
-          gap: 1em;
-
-          .half-width {
-            flex: 1;
-            margin-bottom: 1em;
-
-            &.error input {
-              border-color: var(--mat-sys-error) !important;
-            }
-          }
-        }
-
         .full-width {
           width: 100%;
           margin-bottom: 1em;
@@ -93,15 +79,6 @@
 
     .register-card {
       padding: 1.5em;
-
-      mat-card-content {
-        form {
-          .name-row {
-            flex-direction: column;
-            gap: 0;
-          }
-        }
-      }
     }
   }
 }

@@ -7,9 +7,7 @@ import { environment } from '../../environments/environment';
 export interface User {
   id: string;
   email: string;
-  username: string;
   firstName: string;
-  lastName: string;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
@@ -27,16 +25,14 @@ export interface AuthResponse {
 }
 
 export interface LoginRequest {
-  emailOrUsername: string;
+  email: string;
   password: string;
 }
 
 export interface RegisterRequest {
   email: string;
-  username: string;
   password: string;
   firstName: string;
-  lastName: string;
 }
 
 @Injectable({
@@ -48,12 +44,12 @@ export class AuthService {
   private readonly REFRESH_TOKEN_KEY = 'menu_maker_refresh_token';
   private readonly USER_KEY = 'menu_maker_user';
 
-  private currentUserSubject = new BehaviorSubject<User | null>(
+  private readonly currentUserSubject = new BehaviorSubject<User | null>(
     this.getUserFromStorage(),
   );
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(
+  private readonly isAuthenticatedSubject = new BehaviorSubject<boolean>(
     this.hasValidToken(),
   );
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();

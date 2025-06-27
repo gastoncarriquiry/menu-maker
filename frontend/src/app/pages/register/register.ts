@@ -42,9 +42,7 @@ export class RegisterComponent {
   ) {
     this.registerForm = this.fb.group({
       firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      username: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', Validators.required],
     });
@@ -57,7 +55,7 @@ export class RegisterComponent {
 
   getFieldError(fieldName: string): string | null {
     const field = this.registerForm.get(fieldName);
-    if (field && field.errors && (field.dirty || field.touched)) {
+    if (field?.errors && (field.dirty || field.touched)) {
       return Object.keys(field.errors)[0];
     }
     return null;
@@ -84,9 +82,7 @@ export class RegisterComponent {
       const formValue = this.registerForm.value;
       const registerData = {
         firstName: formValue.firstName,
-        lastName: formValue.lastName,
         email: formValue.email,
-        username: formValue.username,
         password: formValue.password,
       };
 
