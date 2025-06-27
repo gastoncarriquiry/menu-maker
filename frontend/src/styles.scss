@@ -1,19 +1,101 @@
 // Custom Theming for Angular Material
 // For more information: https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
+@use './theme/theme-colors.scss' as colors;
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+@include mat.core();
+
+// Define the light theme
+$light-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: colors.$primary-palette,
+      tertiary: colors.$tertiary-palette,
+    ),
+    typography: (
+      brand-family: 'Roboto',
+      bold-weight: 600,
+      medium-weight: 500,
+      regular-weight: 400,
+    ),
+    density: (
+      scale: 0,
+    ),
+  )
+);
+
+// Define the dark theme
+$dark-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: dark,
+      primary: colors.$primary-palette,
+      tertiary: colors.$tertiary-palette,
+    ),
+    typography: (
+      brand-family: 'Roboto',
+      bold-weight: 600,
+      medium-weight: 500,
+      regular-weight: 400,
+    ),
+    density: (
+      scale: 0,
+    ),
+  )
+);
 
 html {
+  color-scheme: light; // Default to light theme
   @include mat.theme(
     (
       color: (
         theme-type: light,
-        primary: mat.$azure-palette,
-        tertiary: mat.$blue-palette,
+        primary: colors.$primary-palette,
+        tertiary: colors.$tertiary-palette,
       ),
-      typography: Roboto,
-      density: 0,
+      typography: (
+        brand-family: 'Roboto',
+        bold-weight: 600,
+        medium-weight: 500,
+        regular-weight: 400,
+      ),
+      density: (
+        scale: 0,
+      ),
     )
   );
+
+  // Add component themes on top of system tokens
+  @include mat.all-component-colors($light-theme);
+}
+
+// Explicit dark theme when dark-mode class is applied
+body.dark-mode {
+  color-scheme: dark;
+  @include mat.theme(
+    (
+      color: (
+        theme-type: dark,
+        primary: colors.$primary-palette,
+        tertiary: colors.$tertiary-palette,
+      ),
+      typography: (
+        brand-family: 'Roboto',
+        bold-weight: 600,
+        medium-weight: 500,
+        regular-weight: 400,
+      ),
+      density: (
+        scale: 0,
+      ),
+    )
+  );
+
+  // Add component themes on top of system tokens
+  @include mat.all-component-colors($dark-theme);
 }
 
 /* Global styles */
@@ -39,14 +121,14 @@ body {
 
 /* Success snackbar styling */
 .success-snackbar {
-  background-color: #4caf50 !important;
-  color: white !important;
+  background-color: var(--mat-sys-primary) !important;
+  color: var(--mat-sys-on-primary) !important;
 }
 
 /* Error snackbar styling */
 .error-snackbar {
-  background-color: #f44336 !important;
-  color: white !important;
+  background-color: var(--mat-sys-error) !important;
+  color: var(--mat-sys-on-error) !important;
 }
 
 /* Offline mode adjustments */
