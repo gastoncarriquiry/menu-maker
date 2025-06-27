@@ -33,7 +33,9 @@
             <mat-error>El correo electrónico es requerido</mat-error>
           }
           @if (getFieldError('email') === 'email') {
-            <mat-error>Por favor ingresa un correo electrónico válido</mat-error>
+            <mat-error
+              >Por favor ingresa un correo electrónico válido</mat-error
+            >
           }
         </mat-form-field>
 
@@ -50,7 +52,9 @@
             <mat-error>La contraseña es requerida</mat-error>
           }
           @if (getFieldError('password') === 'minlength') {
-            <mat-error>La contraseña debe tener al menos 8 caracteres</mat-error>
+            <mat-error
+              >La contraseña debe tener al menos 8 caracteres</mat-error
+            >
           }
         </mat-form-field>
 

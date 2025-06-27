@@ -69,7 +69,8 @@ export class LoginComponent {
         error: (error) => {
           this.isLoading.set(false);
           this.snackBar.open(
-            error.message ?? 'Error de inicio de sesión. Por favor intenta de nuevo.',
+            error.message ??
+              'Error de inicio de sesión. Por favor intenta de nuevo.',
             'Cerrar',
             {
               duration: 5000,
