@@ -120,15 +120,58 @@ body {
 }
 
 /* Success snackbar styling */
-.success-snackbar {
-  background-color: var(--mat-sys-primary) !important;
-  color: var(--mat-sys-on-primary) !important;
-}
+.mat-mdc-snack-bar-container {
+  &.success-snackbar {
+    background-color: var(--mat-sys-primary) !important;
 
-/* Error snackbar styling */
-.error-snackbar {
-  background-color: var(--mat-sys-error) !important;
-  color: var(--mat-sys-on-error) !important;
+    .mat-mdc-snackbar-surface {
+      background-color: var(--mat-sys-primary) !important;
+    }
+
+    .mat-mdc-snack-bar-label,
+    .mdc-snackbar__label {
+      color: var(--mat-sys-on-primary) !important;
+    }
+
+    .mat-mdc-button.mat-mdc-snack-bar-action,
+    .mdc-button.mat-mdc-snack-bar-action {
+      color: var(--mat-sys-on-primary) !important;
+
+      .mdc-button__label {
+        color: var(--mat-sys-on-primary) !important;
+      }
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+      }
+    }
+  }
+
+  &.error-snackbar {
+    background-color: var(--mat-sys-error) !important;
+
+    .mat-mdc-snackbar-surface {
+      background-color: var(--mat-sys-error) !important;
+    }
+
+    .mat-mdc-snack-bar-label,
+    .mdc-snackbar__label {
+      color: var(--mat-sys-on-error) !important;
+    }
+
+    .mat-mdc-button.mat-mdc-snack-bar-action,
+    .mdc-button.mat-mdc-snack-bar-action {
+      color: var(--mat-sys-on-error) !important;
+
+      .mdc-button__label {
+        color: var(--mat-sys-on-error) !important;
+      }
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+      }
+    }
+  }
 }
 
 /* Offline mode adjustments */
