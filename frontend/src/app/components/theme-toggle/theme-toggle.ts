@@ -14,14 +14,14 @@ import { ThemeService } from '../../services/theme';
       mat-icon-button
       (click)="toggleTheme()"
       [matTooltip]="
-        (themeService.darkTheme$ | async)
-          ? 'Switch to light theme'
-          : 'Switch to dark theme'
+        themeService.isDarkTheme()
+          ? 'Cambiar a modo claro'
+          : 'Cambiar a modo oscuro'
       "
       class="theme-toggle-button"
     >
       <mat-icon>
-        {{ (themeService.darkTheme$ | async) ? 'light_mode' : 'dark_mode' }}
+        {{ themeService.isDarkTheme() ? 'light_mode' : 'dark_mode' }}
       </mat-icon>
     </button>
   `,

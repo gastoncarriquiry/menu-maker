@@ -10,21 +10,17 @@ export const authGuard: CanActivateFn = (route, state) => {
   const auth = inject(AuthService);
   const router = inject(Router);
 
-  return auth.isAuthenticated$.pipe(
-    take(1),
-    map((isAuthenticated) => {
-      if (isAuthenticated) {
-        return true;
-      } else {
-        // Store the attempted URL for redirecting after login
-        const returnUrl = state.url;
-        router.navigate(['/login'], {
-          queryParams: { returnUrl },
-        });
-        return false;
-      }
-    }),
-  );
+  const isAuthd = auth.isUserAuthenticated();
+
+  if (!isAuthd) {
+    // Store the attempted URL for redirecting after login
+    const returnUrl = state.url;
+    router.navigate(['/login'], {
+      queryParams: { returnUrl },
+    });
+  }
+
+  return isAuthd;
 };
 
 /**
@@ -34,16 +30,9 @@ export const guestGuard: CanActivateFn = (route, state) => {
   const auth = inject(AuthService);
   const router = inject(Router);
 
-  return auth.isAuthenticated$.pipe(
-    take(1),
-    map((isAuthenticated) => {
-      if (!isAuthenticated) {
-        return true;
-      } else {
-        // Redirect authenticated users to dashboard
-        router.navigate(['/dashboard']);
-        return false;
-      }
-    }),
-  );
+  const isAuthd = auth.isUserAuthenticated();
+
+  if (isAuthd) router.navigate(['/dashboard']);
+
+  return !isAuthd;
 };

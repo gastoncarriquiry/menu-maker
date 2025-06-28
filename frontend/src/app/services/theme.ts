@@ -1,15 +1,15 @@
-import { Injectable, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { BehaviorSubject } from 'rxjs';
+import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ThemeService {
-  private darkThemeSubject = new BehaviorSubject<boolean>(false);
-  public darkTheme$ = this.darkThemeSubject.asObservable();
+  private readonly document = inject(DOCUMENT);
+  private readonly _isDarkTheme: WritableSignal<boolean> = signal(false);
+  public isDarkTheme = this._isDarkTheme.asReadonly();
 
-  constructor(@Inject(DOCUMENT) private document: Document) {
+  constructor() {
     // Initialize theme based on system preference or localStorage
     this.initializeTheme();
   }
@@ -29,11 +29,11 @@ export class ThemeService {
   }
 
   public toggleTheme(): void {
-    this.setDarkTheme(!this.darkThemeSubject.value);
+    this.setDarkTheme(!this._isDarkTheme());
   }
 
   public setDarkTheme(isDark: boolean): void {
-    this.darkThemeSubject.next(isDark);
+    this._isDarkTheme.set(isDark);
 
     // Toggle the CSS class on body element (Angular Material v20 approach)
     if (isDark) {
@@ -44,9 +44,5 @@ export class ThemeService {
 
     // Save preference
     localStorage.setItem('darkTheme', JSON.stringify(isDark));
-  }
-
-  public isDarkTheme(): boolean {
-    return this.darkThemeSubject.value;
   }
 }

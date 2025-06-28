@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, WritableSignal, inject, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
@@ -41,15 +41,14 @@ export class AuthService {
   private readonly REFRESH_TOKEN_KEY = 'menu_maker_refresh_token';
   private readonly USER_KEY = 'menu_maker_user';
 
-  private readonly currentUserSubject = new BehaviorSubject<User | null>(
-    this.getUserFromStorage(),
-  );
-  public currentUser$ = this.currentUserSubject.asObservable();
+  private readonly _currentUser: WritableSignal<User | null> =
+    signal<User | null>(this.getUserFromStorage());
+  public readonly getCurrentUser = this._currentUser.asReadonly();
 
-  private readonly isAuthenticatedSubject = new BehaviorSubject<boolean>(
+  private readonly _isAuthenticated: WritableSignal<boolean> = signal<boolean>(
     this.hasValidToken(),
   );
-  public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+  public readonly isUserAuthenticated = this._isAuthenticated.asReadonly();
 
   private readonly http = inject(HttpClient);
 
@@ -141,7 +140,7 @@ export class AuthService {
     return this.http.get<{ user: User }>(`${this.API_URL}/auth/profile`).pipe(
       tap((response) => {
         this.storeUser(response.user);
-        this.currentUserSubject.next(response.user);
+        this._currentUser.set(response.user);
       }),
       catchError(this.handleError),
     );
@@ -162,27 +161,13 @@ export class AuthService {
   }
 
   /**
-   * Get current user
-   */
-  getCurrentUser(): User | null {
-    return this.currentUserSubject.value;
-  }
-
-  /**
-   * Check if user is authenticated
-   */
-  isAuthenticated(): boolean {
-    return this.isAuthenticatedSubject.value;
-  }
-
-  /**
    * Handle successful authentication
    */
   private handleAuthSuccess(response: AuthResponse): void {
     this.storeTokens(response.tokens);
     this.storeUser(response.user);
-    this.currentUserSubject.next(response.user);
-    this.isAuthenticatedSubject.next(true);
+    this._currentUser.set(response.user);
+    this._isAuthenticated.set(true);
   }
 
   /**
@@ -192,8 +177,8 @@ export class AuthService {
     localStorage.removeItem(this.ACCESS_TOKEN_KEY);
     localStorage.removeItem(this.REFRESH_TOKEN_KEY);
     localStorage.removeItem(this.USER_KEY);
-    this.currentUserSubject.next(null);
-    this.isAuthenticatedSubject.next(false);
+    this._currentUser.set(null);
+    this._isAuthenticated.set(false);
   }
 
   /**

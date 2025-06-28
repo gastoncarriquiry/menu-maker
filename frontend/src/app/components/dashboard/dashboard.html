@@ -1,12 +1,12 @@
 <mat-toolbar color="primary">
   <span>Panel de Control Menu Maker</span>
   <span class="spacer"></span>
-  <ng-container *ngIf="currentUser$ | async as user">
-    <span class="user-info">¡Bienvenido, {{ user.firstName }}!</span>
+  @if (currentUser) {
+    <span class="user-info">¡Bienvenido, {{ currentUser.name }}!</span>
     <button mat-icon-button (click)="logout()" aria-label="Cerrar Sesión">
       <mat-icon>logout</mat-icon>
     </button>
-  </ng-container>
+  }
 </mat-toolbar>
 
 <div class="dashboard-container">
