@@ -1,16 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal, WritableSignal } from '@angular/core';
 import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
-import { BehaviorSubject, filter, map } from 'rxjs';
+import { filter, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PwaService {
-  private readonly _isOnline = new BehaviorSubject<boolean>(true);
-  private readonly _updateAvailable = new BehaviorSubject<boolean>(false);
+  private readonly _isOnline: WritableSignal<boolean> = signal(true);
+  private readonly _updateAvailable: WritableSignal<boolean> = signal(false);
 
-  public readonly isOnline$ = this._isOnline.asObservable();
-  public readonly updateAvailable$ = this._updateAvailable.asObservable();
+  public readonly isOnline = this._isOnline.asReadonly();
+  public readonly updateAvailable = this._updateAvailable.asReadonly();
 
   constructor(private readonly swUpdate: SwUpdate) {
     this.initializeNetworkListener();
@@ -19,15 +19,15 @@ export class PwaService {
 
   private initializeNetworkListener(): void {
     // Set initial online status
-    this._isOnline.next(navigator.onLine);
+    this._isOnline.set(navigator.onLine);
 
     // Listen for online/offline events
     window.addEventListener('online', () => {
-      this._isOnline.next(true);
+      this._isOnline.set(true);
     });
 
     window.addEventListener('offline', () => {
-      this._isOnline.next(false);
+      this._isOnline.set(false);
     });
   }
 
@@ -39,17 +39,22 @@ export class PwaService {
       // Listen for available updates
       this.swUpdate.versionUpdates
         .pipe(
-          filter((evt): evt is VersionReadyEvent => evt.type === 'VERSION_READY'),
-          map(() => true)
+          filter(
+            (evt): evt is VersionReadyEvent => evt.type === 'VERSION_READY',
+          ),
+          map(() => true),
         )
         .subscribe((updateAvailable) => {
-          this._updateAvailable.next(updateAvailable);
+          this._updateAvailable.set(updateAvailable);
         });
 
       // Check for updates every 6 hours
-      setInterval(() => {
-        this.swUpdate.checkForUpdate();
-      }, 6 * 60 * 60 * 1000);
+      setInterval(
+        () => {
+          this.swUpdate.checkForUpdate();
+        },
+        6 * 60 * 60 * 1000,
+      );
     }
   }
 
@@ -59,13 +64,5 @@ export class PwaService {
         window.location.reload();
       });
     }
-  }
-
-  public get isOnline(): boolean {
-    return this._isOnline.value;
-  }
-
-  public get updateAvailable(): boolean {
-    return this._updateAvailable.value;
   }
 }

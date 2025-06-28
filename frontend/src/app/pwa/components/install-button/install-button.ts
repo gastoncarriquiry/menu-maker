@@ -10,16 +10,17 @@ import { InstallPromptService } from '../../services/install-prompt';
   standalone: true,
   imports: [CommonModule, MatButtonModule, MatIconModule],
   template: `
-    <button
-      mat-raised-button
-      color="primary"
-      *ngIf="installPromptService.canShowInstallPrompt()"
-      (click)="installApp()"
-      class="install-button"
-    >
-      <mat-icon>get_app</mat-icon>
-      Install App
-    </button>
+    @if (installPromptService.canShowInstallPrompt()) {
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="installApp()"
+        class="install-button"
+      >
+        <mat-icon>get_app</mat-icon>
+        Install App
+      </button>
+    }
   `,
   styles: [
     `

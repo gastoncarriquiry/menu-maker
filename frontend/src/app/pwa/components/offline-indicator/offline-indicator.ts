@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PwaService } from '../../services/pwa';
@@ -10,7 +10,7 @@ import { PwaService } from '../../services/pwa';
   template: `
     <div
       class="offline-banner"
-      [class.visible]="!(pwaService.isOnline$ | async)"
+      [class.visible]="!pwaService.isOnline()"
       role="alert"
       aria-live="polite"
     >
@@ -76,8 +76,9 @@ export class OfflineIndicatorComponent {
   private readonly snackBar = inject(MatSnackBar);
 
   constructor() {
-    // Show snackbar when coming back online
-    this.pwaService.isOnline$.subscribe((isOnline) => {
+    // Show snackbar when coming back online using effect on the signal
+    effect(() => {
+      const isOnline = this.pwaService.isOnline();
       if (isOnline && !this.isFirstLoad()) {
         this.snackBar.open("You're back online!", 'Close', {
           duration: 3000,

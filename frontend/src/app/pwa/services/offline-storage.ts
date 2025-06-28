@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable, signal, WritableSignal } from '@angular/core';
 
 export interface MenuItem {
   id: string;
@@ -30,8 +29,9 @@ export class OfflineStorageService {
   private readonly STORAGE_KEY = 'menu-maker-offline-data';
   private readonly MAX_STORAGE_AGE = 24 * 60 * 60 * 1000; // 24 hours
 
-  private readonly _offlineData = new BehaviorSubject<OfflineData | null>(null);
-  public readonly offlineData$ = this._offlineData.asObservable();
+  private readonly _offlineData: WritableSignal<OfflineData | null> =
+    signal(null);
+  public readonly offlineData = this._offlineData.asReadonly();
 
   constructor() {
     this.loadOfflineData();
@@ -42,10 +42,10 @@ export class OfflineStorageService {
       const stored = localStorage.getItem(this.STORAGE_KEY);
       if (stored) {
         const data = JSON.parse(stored) as OfflineData;
-        
+
         // Check if data is not too old
         if (Date.now() - data.lastSync < this.MAX_STORAGE_AGE) {
-          this._offlineData.next(data);
+          this._offlineData.set(data);
         } else {
           this.clearOfflineData();
         }
@@ -58,42 +58,48 @@ export class OfflineStorageService {
 
   public saveOfflineData(data: Partial<OfflineData>): void {
     try {
-      const currentData = this._offlineData.value || {
+      const currentData = this._offlineData() || {
         menus: [],
         preferences: null,
-        lastSync: 0
+        lastSync: 0,
       };
 
       const updatedData: OfflineData = {
         ...currentData,
         ...data,
-        lastSync: Date.now()
+        lastSync: Date.now(),
       };
 
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(updatedData));
-      this._offlineData.next(updatedData);
+      this._offlineData.set(updatedData);
     } catch (error) {
       console.error('Failed to save offline data:', error);
       // Handle storage quota exceeded
-      if (error instanceof DOMException && error.name === 'QuotaExceededError') {
+      if (
+        error instanceof DOMException &&
+        error.name === 'QuotaExceededError'
+      ) {
         this.clearOldData();
         // Try again after clearing old data
         try {
           localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data));
         } catch (retryError) {
-          console.error('Failed to save offline data after cleanup:', retryError);
+          console.error(
+            'Failed to save offline data after cleanup:',
+            retryError,
+          );
         }
       }
     }
   }
 
   public getOfflineMenus(): MenuItem[] {
-    const data = this._offlineData.value;
+    const data = this._offlineData();
     return data?.menus ?? [];
   }
 
   public getOfflinePreferences(): UserPreferences | null {
-    const data = this._offlineData.value;
+    const data = this._offlineData();
     return data?.preferences ?? null;
   }
 
@@ -108,7 +114,7 @@ export class OfflineStorageService {
   public clearOfflineData(): void {
     try {
       localStorage.removeItem(this.STORAGE_KEY);
-      this._offlineData.next(null);
+      this._offlineData.set(null);
     } catch (error) {
       console.error('Failed to clear offline data:', error);
     }
@@ -117,7 +123,7 @@ export class OfflineStorageService {
   private clearOldData(): void {
     // Clear old cached data to free up space
     const keysToRemove: string[] = [];
-    
+
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
       if (key?.startsWith('menu-maker-cache-')) {
@@ -125,7 +131,7 @@ export class OfflineStorageService {
       }
     }
 
-    keysToRemove.forEach(key => {
+    keysToRemove.forEach((key) => {
       try {
         localStorage.removeItem(key);
       } catch (error) {
@@ -134,7 +140,11 @@ export class OfflineStorageService {
     });
   }
 
-  public getStorageInfo(): { used: number; available: number; percentage: number } {
+  public getStorageInfo(): {
+    used: number;
+    available: number;
+    percentage: number;
+  } {
     let used = 0;
     let available = 5 * 1024 * 1024; // Default 5MB quota
 
@@ -148,7 +158,7 @@ export class OfflineStorageService {
 
       // Try to estimate available storage (this is approximate)
       if ('storage' in navigator && 'estimate' in navigator.storage) {
-        navigator.storage.estimate().then(estimate => {
+        navigator.storage.estimate().then((estimate) => {
           available = estimate.quota ?? available;
         });
       }
@@ -159,14 +169,14 @@ export class OfflineStorageService {
     return {
       used,
       available,
-      percentage: (used / available) * 100
+      percentage: (used / available) * 100,
     };
   }
 
   public isDataStale(): boolean {
-    const data = this._offlineData.value;
+    const data = this._offlineData();
     if (!data) return true;
-    
+
     return Date.now() - data.lastSync > this.MAX_STORAGE_AGE / 2; // Consider stale after 12 hours
   }
 }

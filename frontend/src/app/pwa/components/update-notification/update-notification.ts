@@ -12,7 +12,7 @@ import { PwaService } from '../../services/pwa';
   template: `
     <div
       class="update-notification"
-      [class.visible]="pwaService.updateAvailable$ | async"
+      [class.visible]="pwaService.updateAvailable()"
       role="alert"
       aria-live="polite"
     >

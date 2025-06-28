@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable, signal, WritableSignal } from '@angular/core';
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
@@ -14,14 +13,14 @@ interface BeforeInstallPromptEvent extends Event {
   providedIn: 'root',
 })
 export class InstallPromptService {
-  private readonly _installPromptEvent =
-    new BehaviorSubject<BeforeInstallPromptEvent | null>(null);
-  private readonly _isInstallable = new BehaviorSubject<boolean>(false);
-  private readonly _isInstalled = new BehaviorSubject<boolean>(false);
+  private readonly _installPromptEvent: WritableSignal<BeforeInstallPromptEvent | null> =
+    signal(null);
+  private readonly _isInstallable: WritableSignal<boolean> = signal(false);
+  private readonly _isInstalled: WritableSignal<boolean> = signal(false);
 
-  public readonly installPromptEvent$ = this._installPromptEvent.asObservable();
-  public readonly isInstallable$ = this._isInstallable.asObservable();
-  public readonly isInstalled$ = this._isInstalled.asObservable();
+  public readonly installPromptEvent = this._installPromptEvent.asReadonly();
+  public readonly isInstallable = this._isInstallable.asReadonly();
+  public readonly isInstalled = this._isInstalled.asReadonly();
 
   constructor() {
     this.initializeInstallPrompt();
@@ -34,14 +33,14 @@ export class InstallPromptService {
       event.preventDefault();
 
       const beforeInstallPromptEvent = event as BeforeInstallPromptEvent;
-      this._installPromptEvent.next(beforeInstallPromptEvent);
-      this._isInstallable.next(true);
+      this._installPromptEvent.set(beforeInstallPromptEvent);
+      this._isInstallable.set(true);
     });
 
     window.addEventListener('appinstalled', () => {
-      this._isInstalled.next(true);
-      this._isInstallable.next(false);
-      this._installPromptEvent.next(null);
+      this._isInstalled.set(true);
+      this._isInstallable.set(false);
+      this._installPromptEvent.set(null);
     });
   }
 
@@ -59,14 +58,14 @@ export class InstallPromptService {
     // Check if PWA is installed
     const isPWAInstalled = isStandalone || isInstalledViaNavigator;
 
-    this._isInstalled.next(isPWAInstalled);
+    this._isInstalled.set(isPWAInstalled);
   }
 
   public async showInstallPrompt(): Promise<{
     outcome: 'accepted' | 'dismissed';
     platform: string;
   } | null> {
-    const promptEvent = this._installPromptEvent.value;
+    const promptEvent = this._installPromptEvent();
 
     if (!promptEvent) {
       return null;
@@ -81,8 +80,8 @@ export class InstallPromptService {
 
       if (choiceResult.outcome === 'accepted') {
         // User accepted the install prompt
-        this._isInstallable.next(false);
-        this._installPromptEvent.next(null);
+        this._isInstallable.set(false);
+        this._installPromptEvent.set(null);
       }
 
       return choiceResult;
@@ -92,24 +91,16 @@ export class InstallPromptService {
     }
   }
 
-  public get isInstallable(): boolean {
-    return this._isInstallable.value;
-  }
-
-  public get isInstalled(): boolean {
-    return this._isInstalled.value;
-  }
-
   public canShowInstallPrompt(): boolean {
     return (
-      this.isInstallable &&
+      this.isInstallable() &&
       !this.isInstalled &&
-      this._installPromptEvent.value !== null
+      this._installPromptEvent() !== null
     );
   }
 
   public getInstallPlatforms(): string[] {
-    const promptEvent = this._installPromptEvent.value;
+    const promptEvent = this._installPromptEvent();
     return promptEvent?.platforms || [];
   }
 }
